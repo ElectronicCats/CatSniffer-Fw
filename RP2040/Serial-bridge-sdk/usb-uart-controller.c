@@ -225,7 +225,7 @@ void init_uart_data(uint8_t itf)
 	uart_set_format(ui->inst, databits_usb2uart(ud->usb_lc.data_bits),
 			stopbits_usb2uart(ud->usb_lc.stop_bits),
 			parity_usb2uart(ud->usb_lc.parity));
-	uart_set_fifo_enabled(ui->inst, false);
+	uart_set_fifo_enabled(ui->inst, true);
 
 	/* UART RX Interrupt */
 	irq_set_exclusive_handler(ui->irq, ui->irq_fn);
