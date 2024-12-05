@@ -1,5 +1,9 @@
 #include "usb-uart-controller.h"
 
+const uint8_t commandID[5]={0xC3, 0xB1, 0xC3, 0xBF, 0x3C};
+uint8_t commandRecognized=0;
+uint8_t commandCounter=0;
+uint8_t commandData[5];
 
 const uart_id_t UART_ID[CFG_TUD_CDC] = {
 	{
@@ -141,9 +145,17 @@ static inline void uart_read_bytes(uint8_t itf)
 		while (uart_is_readable(ui->inst) &&
 		       (ud->uart_pos < BUFFER_SIZE)) {
 			ud->uart_buffer[ud->uart_pos] = uart_getc(ui->inst);
+			// if(ud->uart_buffer[ud->uart_pos] == commandID[commandCounter]){
+			// 	commandData[commandCounter]=ud->uart_buffer[ud->uart_pos];
+			// 	commandCounter++;
+			// 	if(commandCounter==5) //all characters have matched
+        	// 		commandRecognized=1;
+			// 		commandData[commandCounter] = '\0'; // Null-terminate
+			// }else if(!commandRecognized){
+			// 	commandCounter=0;
+			// }
 			ud->uart_pos++;
 		}
-
 		mutex_exit(&ud->uart_mtx);
 	}
 }

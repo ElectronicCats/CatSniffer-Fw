@@ -9,7 +9,7 @@ project(catsniffer_uart_bridge)
 
 pico_sdk_init()
 
-add_executable(${PROJECT_NAME} main.c usb-uart-controller.c usb-descriptors.c)
+add_executable(${PROJECT_NAME} main.c usb-uart-controller.c usb-descriptors.c catsniffer.c)
 
 target_include_directories(${PROJECT_NAME} PUBLIC
 	./
