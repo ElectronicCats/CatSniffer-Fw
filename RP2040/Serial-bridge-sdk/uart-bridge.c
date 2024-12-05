@@ -1,7 +1,4 @@
 // SPDX-License-Identifier: MIT
-/*
- * Copyright 2021 Álvaro Fernández Rojas <noltari@gmail.com>
- */
 
 #include <hardware/irq.h>
 #include <hardware/structs/sio.h>
@@ -28,7 +25,7 @@
 
 #define BUFFER_SIZE 2560
 
-#define DEF_BIT_RATE 500000
+#define DEF_BIT_RATE 921600
 #define DEF_STOP_BITS 1
 #define DEF_PARITY 0
 #define DEF_DATA_BITS 8
@@ -298,6 +295,8 @@ void init_uart_data(uint8_t itf)
 	irq_set_exclusive_handler(ui->irq, ui->irq_fn);
 	irq_set_enabled(ui->irq, true);
 	uart_set_irq_enables(ui->inst, true, false);
+	irq_set_priority(UART0_IRQ, 0); // Highest priority
+
 }
 
 int main(void)
@@ -348,10 +347,8 @@ int main(void)
 	multicore_launch_core1(core1_entry);
 
 	while (1) {
-		for (itf = 0; itf < CFG_TUD_CDC; itf++) {
-			update_uart_cfg(itf);
-			uart_write_bytes(itf);
-		}
+		update_uart_cfg(0);
+		uart_write_bytes(0);
 	}
 
 	return 0;
